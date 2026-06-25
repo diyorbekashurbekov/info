@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Домен және IP-мекенжайлар | ҰБТ Информатика</title>
+  <!-- Google Fonts: Syne & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables and Base Design System */
+    :root {
+      --bg-deep: #020203;
+      --bg-base: #050506;
+      --bg-elevated: rgba(255, 255, 255, 0.03);
+      --surface: rgba(255, 255, 255, 0.05);
+      --surface-hover: rgba(255, 255, 255, 0.08);
+      --foreground: #EDEDEF;
+      --foreground-muted: #8A8F98;
+      --accent: #5E6AD2;
+      --accent-glow: rgba(94, 106, 210, 0.35);
+      --accent-cyan: #00F2FE;
+      --accent-purple: #9B51E0;
+      --success: #10B981;
+      --error: #EF4444;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(255, 255, 255, 0.2);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --font-sans: 'Outfit', sans-serif;
+      --font-display: 'Syne', sans-serif;
+      --easing: cubic-bezier(0.16, 1, 0.3, 1);
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset and Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-deep);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Ambient Liquid Glass Blobs */
+    .ambient-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      opacity: 0.25;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .blob-1 {
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, var(--accent) 0%, rgba(94, 106, 210, 0) 70%);
+      top: -10vw;
+      left: -10vw;
+      animation: float-blob-1 25s infinite alternate ease-in-out;
+    }
+
+    .blob-2 {
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, var(--accent-purple) 0%, rgba(155, 81, 224, 0) 70%);
+      bottom: -15vw;
+      right: -10vw;
+      animation: float-blob-2 30s infinite alternate ease-in-out;
+    }
+
+    .blob-3 {
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, var(--accent-cyan) 0%, rgba(0, 242, 254, 0) 70%);
+      top: 30%;
+      left: 40%;
+      animation: float-blob-3 20s infinite alternate ease-in-out;
+    }
+
+    @keyframes float-blob-1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(10vw, 5vh) scale(1.1); }
+    }
+
+    @keyframes float-blob-2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-8vw, -10vh) scale(0.9); }
+    }
+
+    @keyframes float-blob-3 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5vw, -5vh) scale(1.2); }
+    }
+
+    /* Glassmorphism General Cards */
+    .glass-card {
+      background: rgba(10, 10, 12, 0.45);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Interactive elements */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      outline: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, #4a54c5 100%);
+      color: white;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(94, 106, 210, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-highlight);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent) 100%);
+      color: var(--bg-deep);
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+    }
+
+    .btn-accent:hover {
+      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.45);
+      transform: translateY(-2px);
+    }
+
+    /* Entrance Overlay */
+    .entrance-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-deep);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .entrance-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .entrance-content {
+      max-width: 600px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 0.4rem;
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+      animation: text-glow-pulse 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes text-glow-pulse {
+      0% { filter: drop-shadow(0 0 5px rgba(94, 106, 210, 0.2)); }
+      100% { filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.5)); }
+    }
+
+    .entrance-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .entrance-subtitle {
+      color: var(--foreground-muted);
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .enter-btn {
+      font-size: 1.1rem;
+      padding: 16px 36px;
+      border-radius: var(--radius);
+    }
+
+    .audio-notice {
+      font-size: 0.85rem;
+      color: var(--foreground-muted);
+      margin-top: 16px;
+    }
+
+    /* App Header & Sound Panel */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 4%;
+      background: rgba(5, 5, 6, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      color: var(--accent-cyan);
+      font-size: 1.2rem;
+      animation: rotate-slow 10s infinite linear;
+    }
+
+    @keyframes rotate-slow {
+      100% { transform: rotate(360deg); }
+    }
+
+    .logo-txt {
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: 0.1rem;
+      background: linear-gradient(135deg, white 0%, var(--foreground-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .audio-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--foreground);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: var(--transition);
+    }
+
+    .audio-toggle-btn:hover {
+      color: var(--accent-cyan);
+      transform: scale(1.1);
+    }
+
+    .audio-toggle-btn:active {
+      transform: scale(0.95);
+    }
+
+    .freq-slider-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--foreground-muted);
+    }
+
+    .freq-slider-container input[type="range"] {
+      -webkit-appearance: none;
+      width: 80px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+    }
+
+    .freq-slider-container input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .freq-slider-container input[type="range"]::-webkit-slider-thumb:hover {
+      background: white;
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    /* Grid Layout */
+    .app-container {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-container.hidden {
+      opacity: 0;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      gap: 24px;
+      padding: 24px 4%;
+      flex-grow: 1;
+      align-items: start;
+    }
+
+    /* Left Panel Elements */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .interactive-card-wrapper {
+      perspective: 1000px;
+    }
+
+    .main-theory-card {
+      min-height: 460px;
+      display: flex;
+      flex-direction: column;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+
+    .card-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle 250px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(94, 106, 210, 0.15) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-content {
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      flex-grow: 1;
+    }
+
+    .badge {
+      align-self: flex-start;
+      background: rgba(94, 106, 210, 0.15);
+      color: #a4adff;
+      border: 1px solid rgba(94, 106, 210, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05rem;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, white 0%, #c8c8cf 100%);
+      -webkit-background-clip: text;
+    }
+
+    /* Tabs */
+    .theory-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--foreground-muted);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .tab-btn:hover {
+      color: var(--foreground);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-cyan);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -13px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    .tab-contents {
+      flex-grow: 1;
+      position: relative;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fade-in-slide 0.5s var(--easing) forwards;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fade-in-slide {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-desc {
+      color: var(--foreground-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .spec-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+
+    .spec-label {
+      color: var(--foreground-muted);
+    }
+
+    .spec-val {
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .spec-val code {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .error-item {
+      border-color: rgba(239, 68, 108, 0.2);
+      background: rgba(239, 68, 68, 0.03);
+    }
+
+    .error-item .spec-val code {
+      color: var(--error);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .url-breakdown {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-family: monospace;
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 0.05rem;
+    }
+
+    .p-protocol { color: var(--accent-cyan); }
+    .p-domain { color: var(--accent-purple); font-weight: bold; }
+    .p-path { color: #E2E8F0; }
+    .p-file { color: #F59E0B; }
+
+    .text-protocol { color: var(--accent-cyan); }
+    .text-domain { color: var(--accent-purple); }
+    .text-path { color: #E2E8F0; }
+    .text-file { color: #F59E0B; }
+
+    /* Domain suggestions box */
+    .panel-subtitle {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .panel-desc {
+      color: var(--foreground-muted);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .domain-suggest-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .suggest-inputs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .suggest-inputs input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: white;
+      padding: 10px 14px;
+      outline: none;
+      font-family: var(--font-sans);
+      transition: var(--transition);
+    }
+
+    .suggest-inputs input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(94, 106, 210, 0.2);
+    }
+
+    .suggest-results {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 40px;
+    }
+
+    .suggest-tag {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .suggest-tag:hover {
+      background: rgba(94, 106, 210, 0.1);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .suggest-tag.copied {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border-color: var(--success) !important;
+      color: #5effc3;
+    }
+
+    .suggest-tag svg {
+      color: var(--foreground-muted);
+      transition: var(--transition);
+    }
+
+    .suggest-tag:hover svg {
+      color: var(--accent-cyan);
+    }
+
+    /* Right Panel: DNS Simulator */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, white 0%, var(--foreground-muted) 100%);
+      -webkit-background-clip: text;
+    }
+
+    .section-desc {
+      color: var(--foreground-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .dns-input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .dns-select-wrapper {
+      position: relative;
+      width: 140px;
+    }
+
+    .dns-select-wrapper select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: white;
+      padding: 12px;
+      outline: none;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+
+    .dns-select-wrapper::after {
+      content: '▼';
+      font-size: 0.7rem;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--foreground-muted);
+      pointer-events: none;
+    }
+
+    #dns-custom-input {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: white;
+      padding: 12px 16px;
+      outline: none;
+      font-family: var(--font-sans);
+      transition: var(--transition);
+    }
+
+    #dns-custom-input:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    }
+
+    .canvas-container {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #030305;
+      aspect-ratio: 16 / 9;
+    }
+
+    #dns-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .dns-status-log {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(5, 5, 7, 0.85);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Quiz Section */
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .quiz-score {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .quiz-score span {
+      color: var(--accent-cyan);
+    }
+
+    .quiz-progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-cyan) 100%);
+      width: 0;
+      transition: width 0.4s ease;
+    }
+
+    .quiz-question-container {
+      min-height: 220px;
+    }
+
+    .quiz-question-card {
+      animation: fade-in-slide 0.5s var(--easing) forwards;
+    }
+
+    .quiz-q-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--foreground);
+      text-align: left;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .quiz-option:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-highlight);
+      transform: translateX(4px);
+    }
+
+    .quiz-option.correct {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border-color: var(--success) !important;
+      color: #a7f3d0;
+    }
+
+    .quiz-option.incorrect {
+      background: rgba(239, 68, 68, 0.1) !important;
+      border-color: var(--error) !important;
+      color: #fca5a5;
+      animation: shake 0.4s ease;
+    }
+
+    .quiz-option.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .quiz-option.disabled.correct, .quiz-option.disabled.incorrect {
+      opacity: 1;
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    /* Footer styling */
+    .app-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 4%;
+      text-align: center;
+      background: rgba(2, 2, 3, 0.8);
+      font-size: 0.8rem;
+      color: var(--foreground-muted);
+      line-height: 1.5;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .logo-text {
+        font-size: 2.5rem;
+      }
+
+      .entrance-title {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .app-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 16px 20px;
+      }
+
+      .audio-controls {
+        align-self: stretch;
+        justify-content: space-between;
+      }
+
+      .grid-layout {
+        padding: 16px 16px;
+      }
+
+      .theory-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 8px;
+      }
+
+      .tab-btn::after {
+        display: none;
+      }
+
+      .dns-input-row {
+        flex-direction: column;
+      }
+
+      .dns-select-wrapper {
+        width: 100%;
+      }
+
+      .canvas-container {
+        aspect-ratio: 4 / 3;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Ambient glowing backgrounds (Liquid Glass Blobs) -->
+<div class="ambient-blob blob-1"></div>
+<div class="ambient-blob blob-2"></div>
+<div class="ambient-blob blob-3"></div>
+
+<!-- Entrance Overlay (Autoplay protection bypass) -->
+<div id="entrance-overlay" class="entrance-overlay">
+  <div class="entrance-content">
+    <div class="logo-text">TASPA</div>
+    <h1 class="entrance-title">Домендер & IP-мекенжайлар</h1>
+    <p class="entrance-subtitle">ҰБТ Информатика пәніне арналған интерактивті премиум-саяхат</p>
+    <button id="enter-btn" class="btn btn-primary enter-btn">
+      <span>Тәжірибені бастау</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+    </button>
+    <p class="audio-notice">Аудио және 3D анимацияларды белсендіру үшін басыңыз</p>
+  </div>
+</div>
+
+<!-- Main App Container -->
+<main id="app-container" class="app-container hidden">
+  <!-- Floating Sound Control Bar -->
+  <header class="app-header">
+    <div class="header-logo">
+      <span class="logo-icon">▲</span>
+      <span class="logo-txt">ҰБТ / Информатика</span>
+    </div>
+    <div class="audio-controls">
+      <button id="mute-btn" class="audio-toggle-btn" title="Дыбысты басқару">
+        <svg id="volume-icon-on" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <svg id="volume-icon-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-x hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+      </button>
+      <div class="freq-slider-container">
+        <label for="synth-freq">Дыбыс реңкі:</label>
+        <input type="range" id="synth-freq" min="60" max="300" value="110" step="1">
+      </div>
+    </div>
+  </header>
+
+  <div class="grid-layout">
+    <!-- Left Panel: Theory & 3D Interactive Card -->
+    <section class="panel left-panel">
+      <div class="interactive-card-wrapper">
+        <!-- 3D Card -->
+        <div id="3d-card" class="glass-card main-theory-card">
+          <div class="card-glow"></div>
+          <div class="card-content">
+            <span class="badge">6-11 сынып оқулықтары</span>
+            <h2 class="card-title">Ғаламтор мекенжайлары</h2>
+
+            <div class="theory-tabs">
+              <button class="tab-btn active" data-tab="tab-ip">IP-мекенжай</button>
+              <button class="tab-btn" data-tab="tab-dns">DNS жүйесі</button>
+              <button class="tab-btn" data-tab="tab-url">URL құрылымы</button>
+            </div>
+
+            <div class="tab-contents">
+              <!-- IP Tab -->
+              <div id="tab-ip" class="tab-pane active">
+                <p class="tab-desc">Желіге қосылған кез келген құрылғының <strong>бірегей сандық мекенжайы</strong>.</p>
+                <div class="spec-list">
+                  <div class="spec-item">
+                    <span class="spec-label">IPv4 форматы:</span>
+                    <span class="spec-val">32 бит (4 байт)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Құрылымы:</span>
+                    <span class="spec-val">Нүктемен бөлінген 4 октет (сан)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Сандар ауқымы:</span>
+                    <span class="spec-val">Әр октет 0-ден 255-ке дейін</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Дұрыс мысал (ҰБТ):</span>
+                    <span class="spec-val"><code>192.168.1.254</code></span>
+                  </div>
+                  <div class="spec-item error-item">
+                    <span class="spec-label">Қате мысал (ҰБТ):</span>
+                    <span class="spec-val"><code>256.100.0.1</code> (256 шектен асады)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DNS Tab -->
+              <div id="tab-dns" class="tab-pane">
+                <p class="tab-desc"><strong>DNS (Domain Name System)</strong> — домендік атауларды IP-мекенжайға аударатын желілік қызмет.</p>
+                <div class="spec-list">
+                  <div class="spec-item">
+                    <span class="spec-label">Домен:</span>
+                    <span class="spec-val">Желідегі әріптік атау</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">1-деңгей (TLD):</span>
+                    <span class="spec-val"><code>.kz</code> (Қазақстан), <code>.com</code> (Коммерциялық)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">2-деңгей:</span>
+                    <span class="spec-val"><code>daryn.kz</code> (Сайт атауы)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">3-деңгей:</span>
+                    <span class="spec-val"><code>edu.daryn.kz</code> (Ішкі домен)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- URL Tab -->
+              <div id="tab-url" class="tab-pane">
+                <p class="tab-desc"><strong>URL (Uniform Resource Locator)</strong> — ресурстың желідегі толық мекенжайы.</p>
+                <div class="url-breakdown">
+                  <code><span class="p-protocol">https://</span><span class="p-domain">bilimland.kz</span><span class="p-path">/kk/lessons/</span><span class="p-file">index.html</span></code>
+                </div>
+                <div class="spec-list">
+                  <div class="spec-item">
+                    <span class="spec-label">Хаттама:</span>
+                    <span class="spec-val text-protocol">https:// (деректер алмасу ережесі)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Домен:</span>
+                    <span class="spec-val text-domain">bilimland.kz (сервер атауы)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Қапшық жолы:</span>
+                    <span class="spec-val text-path">/kk/lessons/ (файл тұрған орын)</span>
+                  </div>
+                  <div class="spec-item">
+                    <span class="spec-label">Құжат атауы:</span>
+                    <span class="spec-val text-file">index.html (нақты файл)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domain Ideas & Showcase for Students -->
+      <div class="glass-card domain-ideas-card">
+        <h3 class="panel-subtitle">Оқушылық жобаларға арналған Домендер</h3>
+        <p class="panel-desc">Өз жобаңды бастағың келе ме? Ұлттық `.kz` домендерін тексеріп, ұсыныстар ал:</p>
+        <div class="domain-suggest-box">
+          <div class="suggest-inputs">
+            <input type="text" id="domain-keyword" placeholder="Мысалы: sabaq, mektep..." maxlength="15">
+            <button id="suggest-btn" class="btn btn-secondary">Ұсыныс алу</button>
+          </div>
+          <div id="suggest-results" class="suggest-results">
+            <!-- JS will inject premium domains here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Panel: Interactive DNS Visualizer & Quiz -->
+    <section class="panel right-panel">
+      <!-- DNS Query Interactive Simulator -->
+      <div class="glass-card dns-simulator-card">
+        <h2 class="section-title">Интерактивті DNS сұраныс анимациясы</h2>
+        <p class="section-desc">Доменнің IP-мекенжайға қалай түрленетінін көріңіз. Төменде доменді таңдап немесе өз бетіңізше жазып, «Сұранысты жіберу» басыңыз.</p>
+
+        <div class="dns-input-row">
+          <div class="dns-select-wrapper">
+            <select id="dns-presets">
+              <option value="custom">Өз нұсқам...</option>
+              <option value="daryn.kz">daryn.kz</option>
+              <option value="bilimland.kz">bilimland.kz</option>
+              <option value="google.com">google.com</option>
+              <option value="yandex.ru">yandex.ru</option>
+              <option value="wikipedia.org">wikipedia.org</option>
+            </select>
+          </div>
+          <input type="text" id="dns-custom-input" placeholder="mysite.kz" value="bilimland.kz">
+          <button id="dns-query-btn" class="btn btn-accent">
+            <span>Сұранысты жіберу</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+        </div>
+
+        <!-- Canvas for DNS Simulation -->
+        <div class="canvas-container">
+          <canvas id="dns-canvas"></canvas>
+          <div id="dns-status-log" class="dns-status-log">Жүйе дайын. Домен енгізіп, сұраныс жіберіңіз...</div>
+        </div>
+      </div>
+
+      <!-- ҰБТ Quiz Challenge -->
+      <div class="glass-card quiz-card">
+        <div class="quiz-header">
+          <h2 class="section-title">ҰБТ Сұрақ-Жауап Тренажеры</h2>
+          <div class="quiz-score">Ұпай: <span id="quiz-score-val">0</span> / <span id="quiz-total-val">0</span></div>
+        </div>
+        <div class="quiz-progress-bar">
+          <div id="quiz-progress" class="quiz-progress-fill" style="width: 0%;"></div>
+        </div>
+
+        <div id="quiz-question-container" class="quiz-question-container">
+          <!-- JS will inject question card here -->
+        </div>
+
+        <div class="quiz-actions">
+          <button id="next-quiz-btn" class="btn btn-secondary hidden">Келесі сұрақ</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="app-footer">
+  <p>© 2026 TASPA. ҰБТ-ға дайындыққа арналған интерактивті платформа. 6-11 сынып "Информатика" оқулықтары негізінде жасалған.</p>
+</footer>
+
+<!-- GSAP for smooth animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  // State Management
+  let audioCtx = null;
+  let synthGain = null;
+  let delayNode = null;
+  let filterNode = null;
+  let backgroundOscillators = [];
+  let isMuted = false;
+  let audioInitialized = false;
+
+  let currentTab = 'tab-ip';
+  let dnsCanvas = null;
+  let dnsCtx = null;
+  let dnsAnimationId = null;
+  let dnsQueryInProgress = false;
+
+  // Quiz Database - 6-11 grade Informatics Textbook UNT questions
+  const quizQuestions = [
+    {
+      q: "Компьютер желісіндегі құрылғының 32 биттен (4 байт) тұратын бірегей сандық мекенжайы қалай аталады?",
+      options: [
+        "Домендік атау",
+        "IP-мекенжай",
+        "URL-мекенжай",
+        "Желілік хаттама"
+      ],
+      correct: 1,
+      hint: "6-сынып оқулығы: Интернетке қосылған әрбір компьютердің өз сандық нөмірі болады."
+    },
+    {
+      q: "ҰБТ есебі: Төмендегілердің ішінен ҚАТЕ жазылған IPv4 мекенжайын табыңыз:",
+      options: [
+        "192.168.0.254",
+        "10.200.50.99",
+        "172.16.300.5",
+        "255.255.255.0"
+      ],
+      correct: 2,
+      hint: "8-сынып оқулығы: IP-мекенжайдың әрбір бөлігі (октет) 0 мен 255 аралығында ғана болуы тиіс."
+    },
+    {
+      q: "«edu.mektep.kz» домендік мекенжайындағы ҮШІНШІ деңгейлі доменді көрсетіңіз:",
+      options: [
+        "kz",
+        "mektep",
+        "edu",
+        "mektep.kz"
+      ],
+      correct: 2,
+      hint: "8-сынып оқулығы: Домен деңгейлері оңнан солға қарай оқылады. '.kz' - бірінші деңгей, 'mektep.kz' - екінші деңгей."
+    },
+    {
+      q: "Пайдаланушыға сандық IP-мекенжай орнына әріптік атауды қолдануға мүмкіндік беретін желілік қызмет қалай аталады?",
+      options: [
+        "HTTP хаттамасы",
+        "FTP сервері",
+        "DNS (Домендік атаулар жүйесі)",
+        "TCP/IP желісі"
+      ],
+      correct: 2,
+      hint: "9-сынып оқулығы: DNS компьютердің желілік IP адресін оқушыға түсінікті мәтіндік доменге аударады."
+    },
+    {
+      q: "«https://darun.kz/olymp/index.html» URL мекенжайындағы НАҚТЫ құжат (файл) атауын табыңыз:",
+      options: [
+        "https://",
+        "darun.kz",
+        "olymp",
+        "index.html"
+      ],
+      correct: 3,
+      hint: "7-сынып оқулығы: URL құрылымы: Хаттама -> Домен -> Папкаға жол -> Құжат атауы."
+    }
+  ];
+
+  let quizScore = 0;
+  let quizIndex = 0;
+  let dnsNodes = [];
+
+  // Audio Synthesis (Web Audio API)
+  function initAudio() {
+    if (audioInitialized) return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContextClass();
+
+      synthGain = audioCtx.createGain();
+      synthGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+      filterNode = audioCtx.createBiquadFilter();
+      filterNode.type = 'lowpass';
+      filterNode.Q.setValueAtTime(1.5, audioCtx.currentTime);
+      filterNode.frequency.setValueAtTime(250, audioCtx.currentTime);
+
+      delayNode = audioCtx.createDelay(1.0);
+      delayNode.delayTime.setValueAtTime(0.4, audioCtx.currentTime);
+
+      const delayFeedback = audioCtx.createGain();
+      delayFeedback.gain.setValueAtTime(0.3, audioCtx.currentTime);
+
+      delayNode.connect(delayFeedback);
+      delayFeedback.connect(delayNode);
+
+      filterNode.connect(synthGain);
+      filterNode.connect(delayNode);
+      delayNode.connect(synthGain);
+      synthGain.connect(audioCtx.destination);
+
+      createBackgroundDrone();
+      startFilterLFO();
+      audioInitialized = true;
+    } catch (e) {
+      console.error("Web Audio API failed to initialize: ", e);
+    }
+  }
+
+  function createBackgroundDrone() {
+    const rootFreq = parseFloat(document.getElementById('synth-freq').value) || 110;
+
+    const osc1 = audioCtx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(rootFreq / 2, audioCtx.currentTime);
+
+    const osc2 = audioCtx.createOscillator();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(rootFreq + 0.5, audioCtx.currentTime);
+
+    const osc3 = audioCtx.createOscillator();
+    osc3.type = 'triangle';
+    osc3.frequency.setValueAtTime(rootFreq * 1.5, audioCtx.currentTime);
+
+    const oscGain = audioCtx.createGain();
+    oscGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+    osc1.connect(oscGain);
+    osc2.connect(oscGain);
+    osc3.connect(oscGain);
+    oscGain.connect(filterNode);
+
+    osc1.start();
+    osc2.start();
+    osc3.start();
+
+    backgroundOscillators = [osc1, osc2, osc3];
+  }
+
+  function updateDroneFrequency(value) {
+    if (!audioCtx || backgroundOscillators.length < 3) return;
+    const rootFreq = parseFloat(value);
+    const now = audioCtx.currentTime;
+
+    backgroundOscillators[0].frequency.exponentialRampToValueAtTime(rootFreq / 2, now + 0.1);
+    backgroundOscillators[1].frequency.exponentialRampToValueAtTime(rootFreq + 0.5, now + 0.1);
+    backgroundOscillators[2].frequency.exponentialRampToValueAtTime(rootFreq * 1.5, now + 0.1);
+  }
+
+  function startFilterLFO() {
+    const lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(0.08, audioCtx.currentTime);
+
+    const lfoGain = audioCtx.createGain();
+    lfoGain.gain.setValueAtTime(150, audioCtx.currentTime);
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(filterNode.frequency);
+    lfo.start();
+  }
+
+  function playClickSound() {
+    if (!audioCtx || isMuted) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, now);
+    osc.frequency.exponentialRampToValueAtTime(200, now + 0.05);
+
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(now + 0.06);
+  }
+
+  function playPingSound(freq = 600) {
+    if (!audioCtx || isMuted) return;
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, now);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    gain.connect(delayNode);
+
+    osc.start();
+    osc.stop(now + 0.31);
+  }
+
+  function playSuccessSound() {
+    if (!audioCtx || isMuted) return;
+    const now = audioCtx.currentTime;
+    const freqs = [329.63, 415.30, 493.88, 659.25];
+
+    freqs.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.05, now + idx * 0.06 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.3);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now + idx * 0.06);
+      osc.stop(now + idx * 0.06 + 0.31);
+    });
+  }
+
+  function playErrorSound() {
+    if (!audioCtx || isMuted) return;
+    const now = audioCtx.currentTime;
+
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(100, now);
+    osc2.type = 'sawtooth';
+    osc2.frequency.setValueAtTime(102, now);
+
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc1.start();
+    osc2.start();
+    osc1.stop(now + 0.31);
+    osc2.stop(now + 0.31);
+  }
+
+  function toggleMute() {
+    if (!synthGain) return;
+    isMuted = !isMuted;
+    const volumeIconOn = document.getElementById('volume-icon-on');
+    const volumeIconOff = document.getElementById('volume-icon-off');
+
+    if (isMuted) {
+      synthGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+      volumeIconOn.classList.add('hidden');
+      volumeIconOff.classList.remove('hidden');
+    } else {
+      synthGain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
+      volumeIconOn.classList.remove('hidden');
+      volumeIconOff.classList.add('hidden');
+    }
+  }
+
+  // 3D Parallax Card Tilt Effect
+  function init3dCard() {
+    const card = document.getElementById('3d-card');
+    const wrapper = card.parentElement;
+
+    wrapper.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const xPercent = x / rect.width;
+      const yPercent = y / rect.height;
+
+      const rotateY = (xPercent - 0.5) * 24;
+      const rotateX = (0.5 - yPercent) * 24;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+      card.style.setProperty('--mouse-x', `${xPercent * 100}%`);
+      card.style.setProperty('--mouse-y', `${yPercent * 100}%`);
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      card.style.setProperty('--mouse-x', '50%');
+      card.style.setProperty('--mouse-y', '50%');
+    });
+  }
+
+  // Tabs Logic
+  function initTabs() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        tabs.forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        const targetPane = document.getElementById(tab.getAttribute('data-tab'));
+        targetPane.classList.add('active');
+
+        currentTab = tab.getAttribute('data-tab');
+        playClickSound();
+      });
+    });
+  }
+
+  // Domain Recommendation Engine
+  const premiumSuffixes = [
+    { name: '-daryn.kz', type: 'Дарындылар үшін' },
+    { name: '-sabaq.kz', type: 'Сабақ / Білім порталы' },
+    { name: '-olymp.kz', type: 'Олимпиадалар мен квиз' },
+    { name: '-bilim.kz', type: 'Оқу ресурстары' },
+    { name: '-fizmat.kz', type: 'Ғылыми бағыт' },
+    { name: '-lab.kz', type: 'Жеке зертханаңыз' }
+  ];
+
+  function generateDomainSuggestions(keyword) {
+    const resultsContainer = document.getElementById('suggest-results');
+    resultsContainer.innerHTML = '';
+
+    let base = keyword.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+    if (!base) base = 'sabaq';
+
+    premiumSuffixes.forEach(suf => {
+      const fullDomain = base + suf.name;
+
+      const tag = document.createElement('div');
+      tag.className = 'suggest-tag';
+      tag.innerHTML = `
+                    <span><strong>${fullDomain}</strong> <small>(${suf.type})</small></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                `;
+
+      tag.addEventListener('click', () => {
+        navigator.clipboard.writeText(fullDomain).then(() => {
+          tag.classList.add('copied');
+          playSuccessSound();
+          const textSpan = tag.querySelector('span');
+          const origHTML = textSpan.innerHTML;
+          textSpan.innerHTML = `Көшірілді!`;
+
+          setTimeout(() => {
+            tag.classList.remove('copied');
+            textSpan.innerHTML = origHTML;
+          }, 1500);
+        });
+      });
+
+      resultsContainer.appendChild(tag);
+    });
+  }
+
+  function initDomainSuggestions() {
+    const input = document.getElementById('domain-keyword');
+    const btn = document.getElementById('suggest-btn');
+
+    btn.addEventListener('click', () => {
+      playClickSound();
+      generateDomainSuggestions(input.value);
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        playClickSound();
+        generateDomainSuggestions(input.value);
+      }
+    });
+
+    generateDomainSuggestions('mektep');
+  }
+
+  // DNS Canvas Simulator Animation
+  function initDnsCanvas() {
+    dnsCanvas = document.getElementById('dns-canvas');
+    dnsCtx = dnsCanvas.getContext('2d');
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const select = document.getElementById('dns-presets');
+    const customInput = document.getElementById('dns-custom-input');
+
+    select.addEventListener('change', () => {
+      playClickSound();
+      if (select.value === 'custom') {
+        customInput.value = '';
+        customInput.focus();
+      } else {
+        customInput.value = select.value;
+      }
+    });
+
+    document.getElementById('dns-query-btn').addEventListener('click', () => {
+      startDnsQueryAnimation();
+    });
+  }
+
+  function resizeCanvas() {
+    if (!dnsCanvas) return;
+    const rect = dnsCanvas.parentNode.getBoundingClientRect();
+    dnsCanvas.width = rect.width;
+    dnsCanvas.height = rect.height;
+
+    const w = dnsCanvas.width;
+    const h = dnsCanvas.height;
+
+    dnsNodes = [
+      { id: 'browser', label: 'Браузер', x: w * 0.15, y: h * 0.5, r: 24, glow: 0 },
+      { id: 'resolver', label: 'DNS Рекурсивті', x: w * 0.42, y: h * 0.5, r: 24, glow: 0 },
+      { id: 'root', label: 'Түбірлі (.)', x: w * 0.8, y: h * 0.2, r: 22, glow: 0 },
+      { id: 'tld', label: '.KZ TLD сервер', x: w * 0.8, y: h * 0.5, r: 22, glow: 0 },
+      { id: 'auth', label: 'Авторлық сервер', x: w * 0.8, y: h * 0.8, r: 22, glow: 0 }
+    ];
+
+    drawDnsStatic();
+  }
+
+  function drawDnsStatic() {
+    if (!dnsCtx) return;
+    dnsCtx.clearRect(0, 0, dnsCanvas.width, dnsCanvas.height);
+
+    dnsCtx.lineWidth = 1.5;
+    dnsCtx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+
+    drawLink(dnsNodes[0], dnsNodes[1]);
+    drawLink(dnsNodes[1], dnsNodes[2]);
+    drawLink(dnsNodes[1], dnsNodes[3]);
+    drawLink(dnsNodes[1], dnsNodes[4]);
+
+    dnsNodes.forEach(node => {
+      if (node.glow > 0) {
+        dnsCtx.beginPath();
+        dnsCtx.arc(node.x, node.y, node.r + 10 * node.glow, 0, Math.PI * 2);
+        dnsCtx.fillStyle = node.id === 'browser' ? `rgba(0, 242, 254, ${0.15 * node.glow})` : `rgba(94, 106, 210, ${0.15 * node.glow})`;
+        dnsCtx.fill();
+      }
+
+      dnsCtx.beginPath();
+      dnsCtx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
+      dnsCtx.fillStyle = '#0a0a0f';
+      dnsCtx.strokeStyle = node.glow > 0 ? (node.id === 'browser' ? 'var(--accent-cyan)' : 'var(--accent)') : 'rgba(255, 255, 255, 0.15)';
+      dnsCtx.lineWidth = 2;
+      dnsCtx.fill();
+      dnsCtx.stroke();
+
+      dnsCtx.beginPath();
+      dnsCtx.arc(node.x, node.y, 4, 0, Math.PI * 2);
+      dnsCtx.fillStyle = node.glow > 0 ? 'var(--accent-cyan)' : 'rgba(255, 255, 255, 0.3)';
+      dnsCtx.fill();
+
+      dnsCtx.font = '11px Outfit, sans-serif';
+      dnsCtx.fillStyle = node.glow > 0 ? '#ffffff' : 'var(--foreground-muted)';
+      dnsCtx.textAlign = 'center';
+      dnsCtx.fillText(node.label, node.x, node.y - node.r - 8);
+    });
+  }
+
+  function drawLink(nodeA, nodeB) {
+    dnsCtx.beginPath();
+    dnsCtx.moveTo(nodeA.x, nodeA.y);
+    dnsCtx.lineTo(nodeB.x, nodeB.y);
+    dnsCtx.stroke();
+  }
+
+  function startDnsQueryAnimation() {
+    if (dnsQueryInProgress) return;
+
+    const inputVal = document.getElementById('dns-custom-input').value.trim();
+    if (!inputVal) {
+      alert("Домен атауын енгізіңіз!");
+      return;
+    }
+
+    initAudio();
+    dnsQueryInProgress = true;
+    document.getElementById('dns-query-btn').disabled = true;
+
+    const steps = [
+      { from: 'browser', to: 'resolver', text: `1. Браузер: «${inputVal}» доменінің IP мекенжайын сұратты...`, sound: 400 },
+      { from: 'resolver', to: 'root', text: `2. Рекурсивті сервер -> Түбірлі (.): «.kz» доменіне жауапты кім береді?`, sound: 500 },
+      { from: 'root', to: 'resolver', text: `3. Түбірлі сервер: «Аймақтық .kz TLD сервер мекенжайы: TLD.DNS.KZ»`, sound: 500 },
+      { from: 'resolver', to: 'tld', text: `4. Рекурсивті сервер -> .KZ TLD сервер: «${inputVal}» қай авторлық серверде?`, sound: 650 },
+      { from: 'tld', to: 'resolver', text: `5. TLD сервер: «Авторлық сервер мекенжайы: ns1.auth-dns.kz»`, sound: 650 },
+      { from: 'resolver', to: 'auth', text: `6. Рекурсивті сервер -> Авторлық сервер: «${inputVal}» IP мекенжайын беріңіз?`, sound: 800 },
+      { from: 'auth', to: 'resolver', text: `7. Авторлық сервер: «Мекенжай табылды: ${getRandomIP(inputVal)}»`, sound: 850 },
+      { from: 'resolver', to: 'browser', text: `Сәтті! Бағыттау аяқталды. Мекенжай: ${getRandomIP(inputVal)}`, sound: 'success' }
+    ];
+
+    let currentStep = 0;
+
+    function runNextStep() {
+      if (currentStep >= steps.length) {
+        dnsQueryInProgress = false;
+        document.getElementById('dns-query-btn').disabled = false;
+        return;
+      }
+
+      const step = steps[currentStep];
+      updateLog(step.text);
+
+      const fromNode = dnsNodes.find(n => n.id === step.from);
+      const toNode = dnsNodes.find(n => n.id === step.to);
+
+      if (step.sound === 'success') {
+        playSuccessSound();
+      } else {
+        playPingSound(step.sound);
+      }
+
+      animatePacket(fromNode, toNode, () => {
+        currentStep++;
+        runNextStep();
+      });
+    }
+
+    runNextStep();
+  }
+
+  function updateLog(text) {
+    const log = document.getElementById('dns-status-log');
+    log.innerText = text;
+    log.style.color = text.includes('Сәтті!') ? 'var(--success)' : 'var(--accent-cyan)';
+    gsap.fromTo(log, { opacity: 0.5 }, { opacity: 1, duration: 0.3 });
+  }
+
+  function getRandomIP(domain) {
+    const hash = domain.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return `185.100.22.${(hash % 250) + 1}`;
+  }
+
+  function animatePacket(nodeA, nodeB, onComplete) {
+    const duration = 0.6;
+    const packet = { x: nodeA.x, y: nodeA.y, glow: 0 };
+
+    nodeA.glow = 1.0;
+    gsap.to(nodeA, { glow: 0, duration: 0.6 });
+
+    gsap.to(packet, {
+      x: nodeB.x,
+      y: nodeB.y,
+      duration: duration,
+      ease: 'power2.inOut',
+      onUpdate: () => {
+        drawDnsStatic();
+        dnsCtx.beginPath();
+        dnsCtx.arc(packet.x, packet.y, 6, 0, Math.PI * 2);
+        dnsCtx.fillStyle = 'var(--accent-cyan)';
+        dnsCtx.shadowColor = 'var(--accent-cyan)';
+        dnsCtx.shadowBlur = 10;
+        dnsCtx.fill();
+        dnsCtx.shadowBlur = 0;
+      },
+      onComplete: () => {
+        nodeB.glow = 1.0;
+        gsap.to(nodeB, { glow: 0, duration: 0.4 });
+        drawDnsStatic();
+        if (onComplete) onComplete();
+      }
+    });
+  }
+
+  // ҰБТ Quiz Challenge Logic
+  function renderQuizQuestion() {
+    const qData = quizQuestions[quizIndex];
+    const container = document.getElementById('quiz-question-container');
+    const totalVal = document.getElementById('quiz-total-val');
+    const progressFill = document.getElementById('quiz-progress');
+    const nextBtn = document.getElementById('next-quiz-btn');
+
+    nextBtn.classList.add('hidden');
+    totalVal.innerText = quizQuestions.length;
+    progressFill.style.width = `${(quizIndex / quizQuestions.length) * 100}%`;
+
+    container.innerHTML = `
+                <div class="quiz-question-card">
+                    <p class="quiz-q-text">${quizIndex + 1}. ${qData.q}</p>
+                    <div class="quiz-options">
+                        ${qData.options.map((opt, idx) => `
+                            <button class="quiz-option" data-idx="${idx}">${opt}</button>
+                        `).join('')}
+                    </div>
+                    <p id="quiz-hint" class="panel-desc" style="margin-top: 16px; font-style: italic; color: #a4adff; opacity: 0; transition: opacity 0.5s ease;">
+                        Көмек: ${qData.hint}
+                    </p>
+                </div>
+            `;
+
+    const options = container.querySelectorAll('.quiz-option');
+    options.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const selectedIdx = parseInt(btn.getAttribute('data-idx'));
+        handleOptionSelect(selectedIdx, btn, options);
+      });
+    });
+  }
+
+  function handleOptionSelect(idx, selectedBtn, allOptions) {
+    const qData = quizQuestions[quizIndex];
+    const correctIdx = qData.correct;
+
+    allOptions.forEach(opt => {
+      opt.classList.add('disabled');
+      const optIdx = parseInt(opt.getAttribute('data-idx'));
+      if (optIdx === correctIdx) {
+        opt.classList.add('correct');
+      }
+    });
+
+    if (idx === correctIdx) {
+      selectedBtn.classList.add('correct');
+      quizScore++;
+      document.getElementById('quiz-score-val').innerText = quizScore;
+      playSuccessSound();
+    } else {
+      selectedBtn.classList.add('incorrect');
+      const hintEl = document.getElementById('quiz-hint');
+      if (hintEl) hintEl.style.opacity = 1;
+      playErrorSound();
+    }
+
+    document.getElementById('next-quiz-btn').classList.remove('hidden');
+  }
+
+  function initQuiz() {
+    const nextBtn = document.getElementById('next-quiz-btn');
+    nextBtn.addEventListener('click', () => {
+      playClickSound();
+      quizIndex++;
+
+      if (quizIndex < quizQuestions.length) {
+        renderQuizQuestion();
+      } else {
+        showQuizResults();
+      }
+    });
+
+    renderQuizQuestion();
+  }
+
+  function showQuizResults() {
+    const container = document.getElementById('quiz-question-container');
+    const progressFill = document.getElementById('quiz-progress');
+    const nextBtn = document.getElementById('next-quiz-btn');
+
+    nextBtn.classList.add('hidden');
+    progressFill.style.width = `100%`;
+
+    let performanceText = '';
+    if (quizScore === quizQuestions.length) {
+      performanceText = "Тамаша! 100% көрсеткіш! Сіз ҰБТ-ға дайынсыз! 🚀";
+    } else if (quizScore >= 3) {
+      performanceText = "Жақсы нәтиже! Мәліметтерді тағы бір рет қайталап шығыңыз. 👍";
+    } else {
+      performanceText = "Қайталау қажет. Сайттағы теорияны оқып, тағы көріңіз. 📚";
+    }
+
+    container.innerHTML = `
+                <div class="quiz-question-card text-center" style="text-align: center; padding: 20px 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy" style="color: var(--accent-cyan); margin-bottom: 16px;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"/><path d="M12 2a6 6 0 0 0-6 6v5a6 6 0 0 0 12 0V8a6 6 0 0 0-6-6z"/></svg>
+                    <h3 class="card-title" style="font-size: 1.5rem; margin-bottom: 10px;">Тест Аяқталды!</h3>
+                    <p class="quiz-q-text" style="font-size: 1.2rem; color: var(--accent-cyan); margin-bottom: 8px;">Сіздің ұпайыңыз: ${quizScore} / ${quizQuestions.length}</p>
+                    <p class="tab-desc">${performanceText}</p>
+                    <button id="restart-quiz-btn" class="btn btn-secondary" style="margin-top: 16px;">Қайта тапсыру</button>
+                </div>
+            `;
+
+    document.getElementById('restart-quiz-btn').addEventListener('click', () => {
+      playClickSound();
+      quizScore = 0;
+      quizIndex = 0;
+      document.getElementById('quiz-score-val').innerText = '0';
+      renderQuizQuestion();
+    });
+  }
+
+  // App Entrance & Global Event Bindings
+  document.addEventListener('DOMContentLoaded', () => {
+    const enterBtn = document.getElementById('enter-btn');
+    const overlay = document.getElementById('entrance-overlay');
+    const appContainer = document.getElementById('app-container');
+
+    enterBtn.addEventListener('click', () => {
+      initAudio();
+      if (audioCtx) {
+        playSuccessSound();
+      }
+
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        onComplete: () => {
+          overlay.classList.add('hidden');
+          appContainer.classList.remove('hidden');
+
+          init3dCard();
+          initTabs();
+          initDomainSuggestions();
+          initDnsCanvas();
+          initQuiz();
+
+          gsap.from('.app-header', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
+          gsap.from('.left-panel', { x: -100, opacity: 0, duration: 1.0, ease: 'power3.out' });
+          gsap.from('.right-panel', { x: 100, opacity: 0, duration: 1.0, ease: 'power3.out' });
+        }
+      });
+    });
+
+    document.getElementById('mute-btn').addEventListener('click', () => {
+      toggleMute();
+    });
+
+    const freqSlider = document.getElementById('synth-freq');
+    freqSlider.addEventListener('input', (e) => {
+      updateDroneFrequency(e.target.value);
+    });
+  });
+</script>
+</body>
+</html>
